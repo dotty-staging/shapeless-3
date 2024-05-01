@@ -16,7 +16,7 @@
 
 package shapeless3.deriving
 
-import scala.annotation.tailrec
+import scala.annotation.{tailrec, nowarn}
 import scala.compiletime.*
 
 import cats.Eval
@@ -679,7 +679,7 @@ object Transform:
   inline def mkRecord[KU, RU <: Tuple, KT, RT <: NonEmptyTuple](rt: RT): RU =
     Tuple.fromArray(mkFieldArray[KU, RU, KT, RT](rt)).asInstanceOf
 
-  inline given [T, U](using
+  @nowarn inline given [T, U](using // avoid warnings for inlined class definitions.
       gent: K0.ProductGeneric[T] { type MirroredElemTypes <: NonEmptyTuple },
       genu: K0.ProductGeneric[U] { type MirroredElemTypes <: Tuple }
   ): Transform[T, U] = new Transform[T, U]:
